@@ -10,5 +10,8 @@ print("login")
 # account = kiwoom.GetLoginInfo("ACCNO")
 # print(account)
 
-data = kiwoom.GetCodeListByMarket('0')
-print(data)
+# data = kiwoom.GetCodeListByMarket('0')
+# print(data)
+
+
+print(kiwoom.GetCodeListByMarket("005930"))

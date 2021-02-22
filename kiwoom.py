@@ -22,8 +22,8 @@ class Kiwoom:
         return data
 
     def GetCodeListByMarket(self, market):
-        data = self.ocx.dynamicCall("GetCodeListByMarket", market)
-        tokens = data.split(";")
+        data = self.ocx.dynamicCall("GetCodeListByMarket(QString)", market)
+        codes = data.split(";")
         return codes[:-1]
 
     def GetMasterCodeName(self, code):

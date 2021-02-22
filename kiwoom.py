@@ -26,7 +26,9 @@ class Kiwoom:
         tokens = data.split(";")
         return codes[:-1]
 
-    def
+    def GetMasterCodeName(self, code):
+        data = self.ocx.dynamicCall("GetMasterCodeName(QString", code)
+        return data
 
 
 app = QApplication(sys.argv)

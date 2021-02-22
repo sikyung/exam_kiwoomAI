@@ -30,6 +30,9 @@ class Kiwoom:
         data = self.ocx.dynamicCall("GetMasterCodeName(QString", code)
         return data
 
+    def GetMasterListedStockDate(self, code):
+        data = self.ocx.dynamicCall("GetMasterListedStockDate(QString", code)
+        return data
 
 app = QApplication(sys.argv)
 

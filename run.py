@@ -2,7 +2,7 @@ from kiwoom import *
 
 kiwoom = Kiwoom()
 kiwoom.CommConnect()
-print("login")
+print("로그인")
 
 # cnt = kiwoom.GetLoginInfo("ACCOUNT_CNT")
 # print(cnt)
@@ -13,5 +13,5 @@ print("login")
 # data = kiwoom.GetCodeListByMarket('0')
 # print(data)
 
-
-print(kiwoom.GetCodeListByMarket("005930"))
+date = kiwoom.GetMasterListedStockDate("005930")
+print(date, type(date))

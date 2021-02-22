@@ -26,4 +26,5 @@ for code in codes:
     data.append((code, name))
 
 df = DataFrame(data=data, columns=['code', '종목명'])
-print(df.head())
+df = df.set_index('code')
+df.to_excel("code.xlsx")

@@ -1,13 +1,29 @@
 from kiwoom import *
+from pandas import DataFrame
 
 
 kiwoom = Kiwoom()
 kiwoom.CommConnect()
 print("login")
 
-codes = kiwoom.GetCodeListByMarket('0')
+data = []
+# samsung = []
+kospi = kiwoom.GetCodeListByMarket('0')
+kosdaq = kiwoom.GetCodeListByMarket('10')
+codes = kospi + kosdaq
+
+# for code in codes:
+#     name = kiwoom.GetMasterCodeName(code)
+#
+#     if '삼성' in name:
+#         samsung.append(code)
+#
+# print(samsung)
+# print(len(samsung))
+
 for code in codes:
     name = kiwoom.GetMasterCodeName(code)
+    data.append((code, name))
 
-    if '삼성' in name:
-        print(code, name)
+df = DataFrame(data=data, columns=['code', '종목명'])
+print(df.head())

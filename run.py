@@ -13,5 +13,5 @@ print("로그인")
 # data = kiwoom.GetCodeListByMarket('0')
 # print(data)
 
-date = kiwoom.GetMasterListedStockDate("005930")
-print(date, type(date))
+date = kiwoom.GetMasterStockState("005930")
+print(date.split("|"))

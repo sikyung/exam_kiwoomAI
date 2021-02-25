@@ -34,5 +34,23 @@ class Kiwoom:
         data = self.ocx.dynamicCall("GetMasterListedStockDate(QString", code)
         return data
 
+    def GetMasterListedStockCnt(self, code):
+        data = self.ocx.dynamicCall("GetMasterListedStockCnt(QString", code)
+        return data
+
+
+    def GetMasterLastPrice(self, code): # 전일 종가
+        data = self.ocx.dynamicCall("GetMasterLastPrice(QString", code)
+        return data
+
+    def GetMasterConstruction(self, code): # 감리 구분
+        data = self.ocx.dynamicCall("GetMasterConstruction(QString", code)
+        return data
+
+    def GetMasterStockState(self, code): # 종목 상태
+        data = self.ocx.dynamicCall("GetMasterStockState(QString", code)
+        return data
+
+
 app = QApplication(sys.argv)
 

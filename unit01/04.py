@@ -33,7 +33,8 @@ for code in codes[:50]:
 
 print(per_result)
 
-result = sorted(per_result, key=lambda x:x[1])
+result = sorted(per_result, key=lambda x:x[2])
 
 for i in result:
     print(i[0], i[1], i[2])
+

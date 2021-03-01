@@ -1,17 +1,12 @@
 from kiwoom import *
+import pprint
 
 kiwoom = Kiwoom()
 kiwoom.CommConnect()
 print("로그인")
 
-# cnt = kiwoom.GetLoginInfo("ACCOUNT_CNT")
-# print(cnt)
-#
-# account = kiwoom.GetLoginInfo("ACCNO")
-# print(account)
-
-# data = kiwoom.GetCodeListByMarket('0')
-# print(data)
-
-date = kiwoom.GetMasterStockState("005930")
-print(date.split("|"))
+# TR
+kiwoom.SetInputValue("종목코드", "352770")
+kiwoom.CommRqData("opt10001", "opt10001", 0, "0101")
+print("데이터 요청 완료")
+print(kiwoom.tr_data["PBR"])

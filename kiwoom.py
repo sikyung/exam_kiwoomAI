@@ -9,6 +9,19 @@ class Kiwoom:
         self.ocx = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
         self.ocx.OnEventConnect.connect(self._handle_login)
         self.ocx.OnReceiveTrData.connect(self._handle_tr)
+        # self.ocx.OnReceiveChejanData.connect(self._)
+        self.ocx.OnReceiveMsg.connect(self._handler_msg)
+        self.ocx.OnReceiveConditionVer.connect(self._handler_condition_load)
+        self.ocx.OnReceiveTrCondition.connect(self._handler_tr_condition)
+
+    def _handler_tr_condition(self, screen, codelist, cond_name, cond_index, next):
+        codes = codelist.split(';')
+        self.codition_codes = codes[:-1]
+
+        self.codition_tr_loop.exit()
+
+    def _handler_msg(self, screen, rqname, trcode, msg):
+        print("OnReceiveMsg: ", screen, rqname, trcode, msg)
 
     def CommConnect(self):
         self.ocx.dynamicCall("CommConnect()")
@@ -90,14 +103,67 @@ class Kiwoom:
         return data.strip()
 
     def _handle_tr(self, screen, rqname, trcode, record, next):
-        self.tr_data = {}
+        # self.tr_data = {}
+        # per = self.GetCommData(trcode, rqname, 0, "PER")
+        # pbr = self.GetCommData(trcode, rqname, 0, "PBR")
+        # self.tr_data["PER"] = per
+        # self.tr_data["PBR"] = pbr
 
-        per = self.GetCommData(trcode, rqname, 0, "PER")
-        pbr = self.GetCommData(trcode, rqname, 0, "PBR")
-        self.tr_data["PER"] = per
-        self.tr_data["PBR"] = pbr
+        if next == '2':
+            self.remained = True
+        else:
+            self.remained = False
 
-        self.tr_loop.exit()
+        if rqname == "opt10081":
+            self._opt10081(rqname, trcode)
+
+        try:
+            self.tr_loop.exit()
+        except:
+            pass
+
+    def GetRepeatCnt(self, trcode, rqname):
+        ret = self.ocx.dynamicCall("GetRepeatCnt(QString, QString", trcode, rqname)
+        return ret
+
+    def _opt10081(self, rqname, trcode):
+        rows = self.GetRepeatCnt(trcode, rqname)
+        for i in range(rows):
+            date = self.GetCommData(trcode, rqname, i, "일자")
+            open = self.GetCommData(trcode, rqname, i, "시가")
+            high = self.GetCommData(trcode, rqname, i, "고가")
+            low = self.GetCommData(trcode, rqname, i, "저가")
+            close = self.GetCommData(trcode, rqname, i, "현재가")
+            volume = self.GetCommData(trcode, rqname, i, "거래량")
+            print(date, open, high, low, close, volume)
+
+    def _handler_condition_load(self, ret, msg):
+        print("OnReceiveConditionVer: ", ret, msg)
+        self.condition_load_loop.exit()
+
+    def GetConditionLoad(self):
+        self.ocx.dynamicCall("GetConditionLoad()")
+
+        self.condition_load_loop = QEventLoop()
+        self.condition_load_loop.exec()
+
+    def GetConditionNameList(self): # 키움 조건식 리스트 불러오기 [중요]
+        data = self.ocx.dynamicCall("GetConditionNameList()")
+        conditions = data.split(";")[:-1]
+
+        ret = []
+        for condition in conditions:
+            index, name = condition.split('^')
+            ret.append((index, name))
+
+        return ret
+
+    def SendCondition(self, screen, cond_name, cond_index, search): # 조건 검색 종목 불러오기
+        self.ocx.dynamicCall("SendCondition(QString, QString, int, int)",screen, cond_name, cond_index, search)
+
+        # event loop
+        self.codition_tr_loop = QEventLoop()
+        self.codition_tr_loop.exec()
 
 app = QApplication(sys.argv)
 

@@ -90,6 +90,12 @@ class Kiwoom:
 
         return result
 
+    def SendOder(self, rqname, screen, accno, order_type, code, quantity, price, hoga, order_no):
+        self.ocx.dynamicCall("SendOder(QString, QString, QString, int, QString, int, int, QString, QString)",
+                             [rqname, screen, accno, order_type, code, quantity, price, hoga, order_no])
+        # self.order_loop = QEventLoop()
+        # self.order_loop.exec()
+
     def SetInputValue(self, item, value):
         self.ocx.dynamicCall("SetInputValue(QString, QString)", item, value)
 

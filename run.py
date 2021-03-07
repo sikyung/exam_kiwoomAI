@@ -10,5 +10,5 @@ kiwoom.GetConditionLoad()
 condition = kiwoom.GetConditionNameList()
 print(condition)
 
-kiwoom.SendCondition("0101", "sungjin", "000", 0)
+kiwoom.SendCondition("0101", "test", "001", 0)
 print(kiwoom.codition_codes)
